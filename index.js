@@ -62,16 +62,18 @@ export const rail = (...funcs) => {
   };
 };
 
-// Promise이면 현재 값을 판단할 수 없기 때문에 then,catch로 연결한다.
 const exec2 = (params, func) => {
-  return isPromise(params)
-    ? params
-        .then((p) => {
-          if (isFailed(p)) return p;
-          return func(p);
-        })
-        .catch((p) => failed(p))
-    : func(params);
+  if (isPromise(params)) {
+    return params
+      .then((p) => (isFailed(p) ? p : func(p)))
+      .catch((err) => failed(err));
+  }
+
+  try {
+    return isFailed(params) ? params : func(params);
+  } catch (err) {
+    return failed(err);
+  }
 };
 
 export const isFailed = (value) => {

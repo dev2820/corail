@@ -48,11 +48,11 @@ describe("rail", () => {
     const { sum, multi } = setup();
     const sum3 = (...nums) => sum(...nums, 3);
     const multi2 = (...nums) => multi(...nums, 2);
-    const maybeThrow = (data) => {
+    const throwData = (data) => {
       throw data;
     };
 
-    const result = await rail(multi2, maybeThrow, sum3)(1); // 1 * 2 ...x
+    const result = await rail(multi2, throwData, sum3)(1); // 1 * 2 ...x
 
     expect(isFailed(result)).toBe(true);
     expect(result.err).toBe(2);
@@ -73,12 +73,25 @@ describe("rail", () => {
     const { asyncSum, asyncMulti } = setup();
     const asyncSum3 = (...nums) => asyncSum(...nums, 3);
     const asyncMulti2 = (...nums) => asyncMulti(...nums, 2);
-    const maybeReject = (data) => {
+    const rejectData = (data) => {
       return Promise.reject(data);
     };
-    const result = await rail(asyncMulti2, maybeReject, asyncSum3)(1);
+    const result = await rail(asyncMulti2, rejectData, asyncSum3)(1);
 
     expect(isFailed(result)).toBe(true);
     expect(result.err).toBe(2);
+  });
+
+  it("should works even returned data is undefined", async () => {
+    const { asyncSum, asyncMulti } = setup();
+    const asyncSum3 = (...nums) => asyncSum(...nums, 3);
+    const asyncMulti2 = (...nums) => asyncMulti(...nums, 2);
+    const returnNothing = () => {
+      return undefined;
+    };
+    const result = await rail(asyncMulti2, returnNothing, asyncSum3)(1);
+
+    expect(isFailed(result)).toBe(false);
+    expect(result).toBeNaN();
   });
 });
