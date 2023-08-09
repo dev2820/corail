@@ -94,4 +94,16 @@ describe("rail", () => {
     expect(isFailed(result)).toBe(false);
     expect(result).toBeNaN();
   });
+
+  it("should works with functions that mixed with async/await functions and normal functions", async () => {
+    const { asyncSum, asyncMulti } = setup();
+    const asyncSum3 = async (...nums) => {
+      return (await asyncSum(...nums)) + 3;
+    };
+    const asyncMulti2 = (...nums) => asyncMulti(...nums, 2);
+    const result = await rail(asyncMulti2, asyncSum3)(1);
+
+    expect(isFailed(result)).toBe(false);
+    expect(result).toBe(6);
+  });
 });
