@@ -10,8 +10,8 @@ const execFunc = (params, func) => {
 
 const exec = (params, func) => {
   return isPromise(params)
-    ? params.then((p) => execFunc(p, func)).catch((p) => execFunc(p, func))
-    : execFunc(params, func);
+    ? params.then((p) => func(p)).catch((p) => func(p))
+    : func(params);
 };
 
 export const pipe = (...funcs) => {
@@ -23,8 +23,12 @@ export const pipe = (...funcs) => {
 };
 
 export const asyncPipe = (...funcs) => {
-  return (...args) => {
-    return funcs.reduce(exec, args);
+  return async (...args) => {
+    try {
+      return await funcs.reduce(exec, args);
+    } catch (err) {
+      return err;
+    }
   };
 };
 
