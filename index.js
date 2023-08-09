@@ -28,12 +28,6 @@ export const asyncPipe = (...funcs) => {
   };
 };
 
-export const failed = (err) => {
-  return {
-    isFailed: FailSymbol,
-    err,
-  };
-};
 /**
  * TODO: success 혹은 failed를 반환한다.
  *
@@ -74,6 +68,13 @@ const exec2 = (params, func) => {
   } catch (err) {
     return failed(err);
   }
+};
+
+export const failed = (err) => {
+  return {
+    isFailed: FailSymbol,
+    err,
+  };
 };
 
 export const isFailed = (value) => {
