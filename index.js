@@ -1,13 +1,5 @@
 import { isPromise } from "./utils";
 
-const execFunc = (params, func) => {
-  if (Array.isArray(params)) {
-    return func(...params);
-  } else {
-    return func(params);
-  }
-};
-
 const exec = (params, func) => {
   return isPromise(params)
     ? params.then((p) => func(p)).catch((p) => func(p))
