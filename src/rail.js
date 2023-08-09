@@ -13,7 +13,7 @@ export const isFailed = (value) => {
   return value instanceof Object && value.isFailed === FailSymbol;
 };
 
-const exec2 = (params, func) => {
+const execFunc = (params, func) => {
   if (isPromise(params)) {
     return params
       .then((p) => (isFailed(p) ? p : func(p)))
@@ -30,7 +30,7 @@ const exec2 = (params, func) => {
 export const rail = (...funcs) => {
   return async (args) => {
     try {
-      const result = await funcs.reduce(exec2, args);
+      const result = await funcs.reduce(execFunc, args);
 
       if (isFailed(result)) return result;
       return result;
