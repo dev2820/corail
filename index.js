@@ -1,5 +1,4 @@
-const isPromise = (value) => value instanceof Promise;
-
+import { isPromise } from "./utils";
 const execFunc = (params, func) => {
   if (Array.isArray(params)) {
     return func(...params);
