@@ -8,9 +8,7 @@ const exec = (params, func) => {
 
 export const pipe = (...funcs) => {
   return (args) => {
-    return funcs.reduce((result, f) => {
-      return f(result);
-    }, args);
+    return funcs.reduce((result, f) => f(result), args);
   };
 };
 
