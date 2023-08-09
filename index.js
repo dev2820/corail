@@ -44,20 +44,15 @@ export const asyncPipe = (...funcs) => {
  */
 const FailSymbol = Symbol("failed");
 
-export const rail = (...funcs) => {
-  return async (args) => {
-    try {
-      const result = await funcs.reduce((result, func) => {
-        return exec2(result, func);
-      }, args);
-
-      if (isFailed(result)) return result;
-
-      return result;
-    } catch (err) {
-      return failed(err);
-    }
+export const failed = (err) => {
+  return {
+    isFailed: FailSymbol,
+    err,
   };
+};
+
+export const isFailed = (value) => {
+  return value instanceof Object && value.isFailed === FailSymbol;
 };
 
 const exec2 = (params, func) => {
@@ -74,13 +69,15 @@ const exec2 = (params, func) => {
   }
 };
 
-export const failed = (err) => {
-  return {
-    isFailed: FailSymbol,
-    err,
-  };
-};
+export const rail = (...funcs) => {
+  return async (args) => {
+    try {
+      const result = await funcs.reduce(exec2, args);
 
-export const isFailed = (value) => {
-  return value instanceof Object && value.isFailed === FailSymbol;
+      if (isFailed(result)) return result;
+      return result;
+    } catch (err) {
+      return failed(err);
+    }
+  };
 };
