@@ -30,15 +30,8 @@ export const asyncPipe = (...funcs) => {
 
 export const failed = (err) => {
   return {
-    isFailed: true,
+    isFailed: FailSymbol,
     err,
-  };
-};
-
-export const success = (data) => {
-  return {
-    isFailed: false,
-    data,
   };
 };
 /**
@@ -51,6 +44,8 @@ export const success = (data) => {
  * 실패하면 다음 함수는 실행하지 않는다.
  * 성공하면 다음 함수를 실행하고 실행한 결과를 다시 넘긴다.
  */
+const FailSymbol = Symbol("failed");
+
 export const rail = (...funcs) => {
   return async (args) => {
     try {
@@ -58,9 +53,9 @@ export const rail = (...funcs) => {
         return exec2(result, func);
       }, args);
 
-      if (result instanceof Object && result.isFailed) return result;
+      if (isFailed(result)) return result;
 
-      return success(result);
+      return result;
     } catch (err) {
       return failed(err);
     }
@@ -72,9 +67,13 @@ const exec2 = (params, func) => {
   return isPromise(params)
     ? params
         .then((p) => {
-          if (p instanceof Object && p.isFailed) return p;
+          if (isFailed(p)) return p;
           return func(p);
         })
         .catch((p) => failed(p))
     : func(params);
+};
+
+export const isFailed = (value) => {
+  return value instanceof Object && value.isFailed === FailSymbol;
 };

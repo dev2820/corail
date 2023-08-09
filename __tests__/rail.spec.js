@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { rail } from "..";
+import { rail, isFailed } from "..";
 
 const setup = () => {
   const sum = (...nums) => nums.reduce((a, b) => a + b, 0);
@@ -40,8 +40,8 @@ describe("rail", () => {
 
     const result = await rail(multi2, sum3)(1); // 1 * 2 + 3
 
-    expect(result.isFailed).toBe(false);
-    expect(result.data).toBe(5);
+    expect(isFailed(result)).toBe(false);
+    expect(result).toBe(5);
   });
 
   it("should return failed Result if there are failed execution at least one", async () => {
@@ -52,9 +52,9 @@ describe("rail", () => {
       throw data;
     };
 
-    const result = await rail(multi2, maybeFail, sum3)(1); // 1 * 2 + 3...?
+    const result = await rail(multi2, maybeFail, sum3)(1); // 1 * 2 ...x
 
-    expect(result.isFailed).toBe(true);
+    expect(isFailed(result)).toBe(true);
     expect(result.err).toBe(2);
   });
 
@@ -65,8 +65,8 @@ describe("rail", () => {
 
     const result = await rail(asyncMulti2, asyncSum3)(1);
 
-    expect(result.isFailed).toBe(false);
-    expect(result.data).toBe(5);
+    expect(isFailed(result)).toBe(false);
+    expect(result).toBe(5);
   });
 
   it("should works with promise reject", async () => {
@@ -78,7 +78,7 @@ describe("rail", () => {
     };
     const result = await rail(asyncMulti2, maybeFail, asyncSum3)(1);
 
-    expect(result.isFailed).toBe(true);
+    expect(isFailed(result)).toBe(true);
     expect(result.err).toBe(2);
   });
 });
