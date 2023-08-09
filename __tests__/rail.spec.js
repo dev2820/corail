@@ -48,11 +48,11 @@ describe("rail", () => {
     const { sum, multi } = setup();
     const sum3 = (...nums) => sum(...nums, 3);
     const multi2 = (...nums) => multi(...nums, 2);
-    const maybeFail = (data) => {
+    const maybeThrow = (data) => {
       throw data;
     };
 
-    const result = await rail(multi2, maybeFail, sum3)(1); // 1 * 2 ...x
+    const result = await rail(multi2, maybeThrow, sum3)(1); // 1 * 2 ...x
 
     expect(isFailed(result)).toBe(true);
     expect(result.err).toBe(2);
@@ -73,10 +73,10 @@ describe("rail", () => {
     const { asyncSum, asyncMulti } = setup();
     const asyncSum3 = (...nums) => asyncSum(...nums, 3);
     const asyncMulti2 = (...nums) => asyncMulti(...nums, 2);
-    const maybeFail = (data) => {
-      throw data;
+    const maybeReject = (data) => {
+      return Promise.reject(data);
     };
-    const result = await rail(asyncMulti2, maybeFail, asyncSum3)(1);
+    const result = await rail(asyncMulti2, maybeReject, asyncSum3)(1);
 
     expect(isFailed(result)).toBe(true);
     expect(result.err).toBe(2);
