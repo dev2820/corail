@@ -104,6 +104,6 @@ describe("rail", () => {
     const result = await rail(asyncMulti2, asyncSum3)(1);
 
     expect(isFailed(result)).toBe(false);
-    expect(result).toBe(6);
+    expect(result).toBe(5);
   });
 });
