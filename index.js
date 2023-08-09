@@ -1,4 +1,5 @@
 import { isPromise } from "./utils";
+
 const execFunc = (params, func) => {
   if (Array.isArray(params)) {
     return func(...params);
@@ -14,9 +15,9 @@ const exec = (params, func) => {
 };
 
 export const pipe = (...funcs) => {
-  return (...args) => {
+  return (args) => {
     return funcs.reduce((result, f) => {
-      return execFunc(result, f);
+      return f(result);
     }, args);
   };
 };
