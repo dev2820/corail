@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { asyncPipe } from "..";
+import { rail } from "..";
 
 const setup = () => {
   const sum = (...nums) => nums.reduce((a, b) => a + b, 0);
@@ -33,32 +33,52 @@ const setup = () => {
 };
 
 describe("rail", () => {
-  it.skip("should run all functions step by step", () => {
+  it("should run all functions step by step and return Result", async () => {
     const { sum, multi } = setup();
     const sum3 = (...nums) => sum(...nums, 3);
     const multi2 = (...nums) => multi(...nums, 2);
 
-    const f = asyncPipe(sum, multi2, sum3);
-    const result1 = f(1); // (1 * 2) + 3
-    const result2 = f(1, 2); // ((1 + 2) * 2) + 3
+    const result = await rail(multi2, sum3)(1); // 1 * 2 + 3
 
-    expect(result1).toBe(5);
-    expect(result2).toBe(9);
+    expect(result.isFailed).toBe(false);
+    expect(result.data).toBe(5);
   });
-  it.skip("should works with promise", async () => {
-    const { sum, asyncSum, asyncMulti } = setup();
-    const square = (num) => num * num;
+
+  it("should return failed Result if there are failed execution at least one", async () => {
+    const { sum, multi } = setup();
+    const sum3 = (...nums) => sum(...nums, 3);
+    const multi2 = (...nums) => multi(...nums, 2);
+    const maybeFail = (data) => {
+      throw data;
+    };
+
+    const result = await rail(multi2, maybeFail, sum3)(1); // 1 * 2 + 3...?
+
+    expect(result.isFailed).toBe(true);
+    expect(result.err).toBe(2);
+  });
+
+  it("should works with promise", async () => {
+    const { asyncSum, asyncMulti } = setup();
     const asyncSum3 = (...nums) => asyncSum(...nums, 3);
     const asyncMulti2 = (...nums) => asyncMulti(...nums, 2);
 
-    const f = asyncPipe(sum, asyncMulti2, asyncSum3);
-    const f2 = asyncPipe(sum, asyncMulti2, asyncSum3, square);
-    const result1 = await f(1); // ((1 * 2) + 3)
-    const result2 = await f2(1); // ((1 * 2) + 3)^2
-    const result3 = await f2(1, 2); // (((1 + 2) * 2) + 3)^2
+    const result = await rail(asyncMulti2, asyncSum3)(1);
 
-    expect(result1).toBe(5);
-    expect(result2).toBe(25);
-    expect(result3).toBe(81);
+    expect(result.isFailed).toBe(false);
+    expect(result.data).toBe(5);
+  });
+
+  it("should works with promise reject", async () => {
+    const { asyncSum, asyncMulti } = setup();
+    const asyncSum3 = (...nums) => asyncSum(...nums, 3);
+    const asyncMulti2 = (...nums) => asyncMulti(...nums, 2);
+    const maybeFail = (data) => {
+      throw data;
+    };
+    const result = await rail(asyncMulti2, maybeFail, asyncSum3)(1);
+
+    expect(result.isFailed).toBe(true);
+    expect(result.err).toBe(2);
   });
 });

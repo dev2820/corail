@@ -28,11 +28,10 @@ export const asyncPipe = (...funcs) => {
   };
 };
 
-export const failed = (message, data) => {
+export const failed = (err) => {
   return {
     isFailed: true,
-    message,
-    data,
+    err,
   };
 };
 
@@ -44,11 +43,38 @@ export const success = (data) => {
 };
 /**
  * TODO: success 혹은 failed를 반환한다.
+ *
+ * 함수 목록을 입력받는다.
+ * 함수 목록을 순차적으로 실행하며, 입력받은 인자를 순차적으로 넘긴다
+ * async/await에서도 동작한다.
+ * 각 함수에서 일어나는 에러를 캐치하며 실패 혹은 성공을 반환한다
+ * 실패하면 다음 함수는 실행하지 않는다.
+ * 성공하면 다음 함수를 실행하고 실행한 결과를 다시 넘긴다.
  */
-const rail = (...funcs) => {
-  return (...args) => {
+export const rail = (...funcs) => {
+  return async (args) => {
     try {
-      return funcs.reduce(exec, args);
-    } catch (err) {}
+      const result = await funcs.reduce((result, func) => {
+        return exec2(result, func);
+      }, args);
+
+      if (result instanceof Object && result.isFailed) return result;
+
+      return success(result);
+    } catch (err) {
+      return failed(err);
+    }
   };
+};
+
+// Promise이면 현재 값을 판단할 수 없기 때문에 then,catch로 연결한다.
+const exec2 = (params, func) => {
+  return isPromise(params)
+    ? params
+        .then((p) => {
+          if (p instanceof Object && p.isFailed) return p;
+          return func(p);
+        })
+        .catch((p) => failed(p))
+    : func(params);
 };
