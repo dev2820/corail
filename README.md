@@ -96,3 +96,18 @@ const result = await korail.rail(asyncMulti2, asyncSum3)(1);
 korail.isFailed(result); // false
 result; // 5
 ```
+
+### With fetch
+
+```js
+const fetchTodo = async (id) => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
+
+  return res.json();
+};
+const getTitle = (todo) => todo.title;
+const result = await korail.rail(fetchTodo, getTitle)(1);
+
+korail.isFailed(result); // false;
+result; // "delectus aut autem"
+```
