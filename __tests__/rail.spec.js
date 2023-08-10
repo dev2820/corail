@@ -19,10 +19,18 @@ describe("rail", () => {
       throw data;
     };
 
-    const result = await korail.rail(multi2, throwData, sum3)(1); // 1 * 2 ...x
+    const result1 = await korail.rail(throwData, multi2, sum3)(1); // 1 * 2 ...x
+    const result2 = await korail.rail(multi2, throwData, sum3)(1); // 1 * 2 ...x
+    const result3 = await korail.rail(multi2, sum3, throwData)(1); // 1 * 2 ...x
 
-    expect(korail.isFailed(result)).toBe(true);
-    expect(result.err).toBe(2);
+    expect(korail.isFailed(result1)).toBe(true);
+    expect(result1.err).toBe(1);
+
+    expect(korail.isFailed(result2)).toBe(true);
+    expect(result2.err).toBe(2);
+
+    expect(korail.isFailed(result3)).toBe(true);
+    expect(result3.err).toBe(5);
   });
 
   it("should works with promise", async () => {
@@ -40,10 +48,18 @@ describe("rail", () => {
     const asyncMulti2 = (num) => Promise.resolve(num * 2);
     const rejectData = (data) => Promise.reject(data);
 
-    const result = await korail.rail(asyncMulti2, rejectData, asyncSum3)(1); // 1 * 2 ... x
+    const result1 = await korail.rail(rejectData, asyncMulti2, asyncSum3)(1); // 1 ... x
+    const result2 = await korail.rail(asyncMulti2, rejectData, asyncSum3)(1); // 1 * 2 ... x
+    const result3 = await korail.rail(asyncMulti2, asyncSum3, rejectData)(1); // 1 * 2 + 3 ... x
 
-    expect(korail.isFailed(result)).toBe(true);
-    expect(result.err).toBe(2);
+    expect(korail.isFailed(result1)).toBe(true);
+    expect(result1.err).toBe(1);
+
+    expect(korail.isFailed(result2)).toBe(true);
+    expect(result2.err).toBe(2);
+
+    expect(korail.isFailed(result3)).toBe(true);
+    expect(result3.err).toBe(5);
   });
 
   it("should works even returned data is undefined", async () => {
