@@ -52,7 +52,7 @@ let's see step by step
 
 ### With promise
 
-The `rail` also works well with AsyncFunctions
+The `rail` also works well with Promise
 
 ```js
 const asyncSum3 = (num) => Promise.resolve(num + 3);
@@ -70,6 +70,8 @@ After `await`, there will be the expected value
 
 ### Create failed with Reject
 
+Like throw, if there is rejected promise, then the result failed, stop running the rest of the functions
+
 ```js
 const asyncSum3 = (num) => Promise.resolve(num + 3);
 const asyncMulti2 = (num) => Promise.resolve(num * 2);
@@ -80,8 +82,6 @@ const result = await korail.rail(asyncMulti2, rejectData, asyncSum3)(1); // 1 * 
 korail.isFailed(result); // true
 result.err; // 2
 ```
-
-Like throw, if there is rejected promise, then the result failed, stop running the rest of the functions
 
 ### With async functions
 
