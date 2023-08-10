@@ -2,15 +2,11 @@ import { isPromise } from "./utils";
 
 const FailSymbol = Symbol("failed");
 
-export const failed = (err) => {
+const failed = (err) => {
   return {
     isFailed: FailSymbol,
     err,
   };
-};
-
-export const isFailed = (value) => {
-  return value instanceof Object && value.isFailed === FailSymbol;
 };
 
 const execFunc = (params, func) => {
@@ -25,6 +21,10 @@ const execFunc = (params, func) => {
   } catch (err) {
     return failed(err);
   }
+};
+
+export const isFailed = (value) => {
+  return value instanceof Object && value.isFailed === FailSymbol;
 };
 
 export const rail = (...funcs) => {
