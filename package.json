@@ -1,6 +1,6 @@
 {
   "name": "corail",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Javascript ROP(Railway Oriented Programming) Implementation",
   "type": "module",
   "repository": {
