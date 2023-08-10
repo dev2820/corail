@@ -1,10 +1,10 @@
 {
-  "name": "korail",
+  "name": "corail",
   "version": "0.1.0",
   "description": "Javascript ROP(Railway Oriented Programming) Implementation",
   "repository": {
     "type": "git",
-    "url": "https://github.com/dev2820/korail"
+    "url": "https://github.com/dev2820/corail"
   },
   "main": "index.js",
   "scripts": {

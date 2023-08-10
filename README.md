@@ -1,6 +1,6 @@
-# Korail
+# Corail
 
-Korail is the ROP(Railway Oriented Programming) Implementation library
+Corail is the ROP(Railway Oriented Programming) Implementation library
 
 ## What is Railway Oriented Programmging
 
@@ -18,7 +18,7 @@ rail works like asynchronous-capable pipe
 const multi2 = (num) => num * 2;
 const sum3 = (num) => num + 3;
 
-const result = await korail.rail(multi2, sum3)(1); // expect 1 * 2 + 3
+const result = await corail.rail(multi2, sum3)(1); // expect 1 * 2 + 3
 
 result; // to be 5
 ```
@@ -35,9 +35,9 @@ const throwData = (data) => {
   throw data;
 };
 
-const result = await korail.rail(multi2, throwData, sum3)(1); // 1 * 2 ...x
+const result = await corail.rail(multi2, throwData, sum3)(1); // 1 * 2 ...x
 
-korail.isFailed(result); // true
+corail.isFailed(result); // true
 result.err; // 2
 ```
 
@@ -48,7 +48,7 @@ let's see step by step
 1. `multi2` will works because there are no failed functions
 2. `throwData` will throw the result of multi2 (it is `2`)
 3. `sum3` will not work because there are failed function (throwData)
-4. As a result, the result failed, so, `korail.isFailed` evaluates the result as a failture and `result.err` is 2 (thrown value)
+4. As a result, the result failed, so, `corail.isFailed` evaluates the result as a failture and `result.err` is 2 (thrown value)
 
 ### With promise
 
@@ -58,9 +58,9 @@ The `rail` also works well with Promise
 const asyncSum3 = (num) => Promise.resolve(num + 3);
 const asyncMulti2 = (num) => Promise.resolve(num * 2);
 
-const result = await korail.rail(asyncMulti2, asyncSum3)(1);
+const result = await corail.rail(asyncMulti2, asyncSum3)(1);
 
-korail.isFailed(result); // false
+corail.isFailed(result); // false
 result; // 5
 ```
 
@@ -77,9 +77,9 @@ const asyncSum3 = (num) => Promise.resolve(num + 3);
 const asyncMulti2 = (num) => Promise.resolve(num * 2);
 const rejectData = (data) => Promise.reject(data);
 
-const result = await korail.rail(asyncMulti2, rejectData, asyncSum3)(1); // 1 * 2 ... x
+const result = await corail.rail(asyncMulti2, rejectData, asyncSum3)(1); // 1 * 2 ... x
 
-korail.isFailed(result); // true
+corail.isFailed(result); // true
 result.err; // 2
 ```
 
@@ -91,9 +91,9 @@ As it worked well with promise, async function also works well
 const asyncSum3 = async (num) => await Promise.resolve(num + 3);
 const asyncMulti2 = (num) => Promise.resolve(num * 2);
 
-const result = await korail.rail(asyncMulti2, asyncSum3)(1);
+const result = await corail.rail(asyncMulti2, asyncSum3)(1);
 
-korail.isFailed(result); // false
+corail.isFailed(result); // false
 result; // 5
 ```
 
@@ -106,8 +106,8 @@ const fetchTodo = async (id) => {
   return res.json();
 };
 const getTitle = (todo) => todo.title;
-const result = await korail.rail(fetchTodo, getTitle)(1);
+const result = await corail.rail(fetchTodo, getTitle)(1);
 
-korail.isFailed(result); // false;
+corail.isFailed(result); // false;
 result; // "delectus aut autem"
 ```
