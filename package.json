@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "node esbuild.js",
-    "publish": "git push origin --tags",
+    "publish": "pnpm ru build && pnpm version patch && git push origin --tags",
     "test": "vitest run",
     "test:watch": "vitest"
   },
