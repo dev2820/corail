@@ -13,7 +13,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist && node esbuild.js",
+    "build": "node esbuild.js",
     "test": "vitest run",
     "test:watch": "vitest"
   },
