@@ -10,31 +10,19 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: setup-code
-        uses: actions/checkout@v3
-        
-      - name: setup-node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
           registry-url: https://registry.npmjs.org/
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          
-      - name: setup-pnpm
-        uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v2
         with:
           version: 8
           
-      - name: install
-        run: pnpm install --frozen-lockfile
-        
-      - name: test
-        run: pnpm run test
-        
-      - name: build
-        run: pnpm run build
-        
-      - name: publish
-        run: pnpm publish        
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run test
+      - run: pnpm run build
+      - run: pnpm publish  
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
