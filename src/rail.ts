@@ -1,10 +1,10 @@
 import { isPromise } from "./utils";
+import type { Fn } from "./type";
 
 type Failed<T = any> = {
   failed: Symbol;
   err: T;
 };
-type Fn = (...args: any[]) => any;
 
 const FailSymbol = Symbol("failed");
 
