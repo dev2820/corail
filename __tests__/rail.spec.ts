@@ -24,13 +24,13 @@ describe("rail", () => {
     const result3 = await corail.rail(multi2, sum3, throwData)(1); // 1 * 2 ...x
 
     expect(corail.isFailed(result1)).toBe(true);
-    expect(result1.err).toBe(1);
+    expect(corail.isFailed(result1) && result1.err).toBe(1);
 
     expect(corail.isFailed(result2)).toBe(true);
-    expect(result2.err).toBe(2);
+    expect(corail.isFailed(result2) && result2.err).toBe(2);
 
     expect(corail.isFailed(result3)).toBe(true);
-    expect(result3.err).toBe(5);
+    expect(corail.isFailed(result3) && result3.err).toBe(5);
   });
 
   it("should works with promise", async () => {
@@ -53,13 +53,13 @@ describe("rail", () => {
     const result3 = await corail.rail(asyncMulti2, asyncSum3, rejectData)(1); // 1 * 2 + 3 ... x
 
     expect(corail.isFailed(result1)).toBe(true);
-    expect(result1.err).toBe(1);
+    expect(corail.isFailed(result1) && result1.err).toBe(1);
 
     expect(corail.isFailed(result2)).toBe(true);
-    expect(result2.err).toBe(2);
+    expect(corail.isFailed(result2) && result2.err).toBe(2);
 
     expect(corail.isFailed(result3)).toBe(true);
-    expect(result3.err).toBe(5);
+    expect(corail.isFailed(result3) && result3.err).toBe(5);
   });
 
   it("should works even returned data is undefined", async () => {
