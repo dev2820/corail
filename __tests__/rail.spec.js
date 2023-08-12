@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import * as corail from "..";
+import * as corail from "../src";
 
 describe("rail", () => {
   it("should run all functions step by step and return Result", async () => {

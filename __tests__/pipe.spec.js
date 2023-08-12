@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { pipe } from "..";
+import { pipe } from "../src";
 
 describe("pipe", () => {
   it("should run all functions step by step", () => {

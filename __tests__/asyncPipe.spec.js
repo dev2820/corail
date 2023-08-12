@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { asyncPipe } from "..";
+import { asyncPipe } from "../src";
 
 const setup = () => {
   const sum = (nums) => nums.reduce((a, b) => a + b, 0);
