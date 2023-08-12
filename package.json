@@ -3,6 +3,7 @@
   "version": "0.2.3",
   "description": "Javascript ROP(Railway Oriented Programming) Implementation",
   "type": "module",
+  "main": "dist/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/dev2820/corail"
