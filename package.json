@@ -22,6 +22,7 @@
   "scripts": {
     "build": "rm -rf dist/* && node esbuild.js",
     "patch": "pnpm version patch && git push origin --tags",
+    "patch:minor": "pnpm version minor && git push origin --tags",
     "test": "vitest run",
     "test:watch": "vitest"
   },
