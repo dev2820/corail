@@ -12,8 +12,15 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "node esbuild.js",
+    "build": "rm -rf dist/* && node esbuild.js",
     "patch": "pnpm version patch && git push origin --tags",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -32,6 +39,7 @@
   "devDependencies": {
     "esbuild": "^0.19.0",
     "esbuild-node-externals": "^1.8.0",
+    "esbuild-plugin-d.ts": "^1.1.0",
     "typescript": "^5.1.6",
     "vitest": "^0.34.1"
   }

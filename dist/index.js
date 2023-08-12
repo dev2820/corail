@@ -1,0 +1,1 @@
+var o=e=>e instanceof Promise;var s=Symbol("failed"),t=e=>({failed:s,err:e}),c=(e,r)=>{if(o(e))return e.then(n=>i(n)?n:r(n)).catch(n=>t(n));try{return i(e)?e:r(e)}catch(n){return t(n)}},i=e=>e instanceof Object&&e.failed===s,a=(...e)=>async r=>{try{return await e.reduce(c,r)}catch(n){return t(n)}};export{i as isFailed,a as rail};

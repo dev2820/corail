@@ -1,13 +1,14 @@
 import esbuild from "esbuild";
 import { nodeExternalsPlugin } from "esbuild-node-externals";
+import { dtsPlugin } from "esbuild-plugin-d.ts";
 
 const commonOpts = {
-  entryPoints: ["./index.js"],
+  entryPoints: ["./src/index.ts"],
   outdir: "dist",
   bundle: true,
   minify: true,
   treeShaking: true,
-  plugins: [nodeExternalsPlugin()],
+  plugins: [nodeExternalsPlugin(), dtsPlugin()],
 };
 
 /**
@@ -17,7 +18,6 @@ esbuild.build({
   ...commonOpts,
   format: "esm",
   target: "es2020",
-  outExtension: { ".js": ".mjs" },
 });
 
 /**
