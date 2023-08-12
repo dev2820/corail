@@ -1,14 +1,14 @@
 import { isPromise } from "./utils";
 import type { Fn } from "./type";
 
-type Failed<T = any> = {
+type Failed = {
   failed: Symbol;
-  err: T;
+  err: any;
 };
 
 const FailSymbol = Symbol("failed");
 
-const failed = <T = any>(err: T): Failed => {
+const failed = (err: any): Failed => {
   return {
     failed: FailSymbol,
     err,
@@ -33,8 +33,8 @@ export const isFailed = (value: any): value is Failed => {
   return value instanceof Object && value.failed === FailSymbol;
 };
 
-export const rail = <T extends Fn[]>(...funcs: T) => {
-  return async (args: any): Promise<Failed | ReturnType<T[number]>> => {
+export const rail = <Fns extends Fn[]>(...funcs: Fns) => {
+  return async (args: any): Promise<Failed | ReturnType<Fns[number]>> => {
     try {
       const result = await funcs.reduce(execFunc, args);
 
