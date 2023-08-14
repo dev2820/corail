@@ -4,9 +4,13 @@ declare const _default: {
         failed: Symbol;
         err: any;
     };
-    rail: <Fns extends import("./type").Fn[]>(...funcs: Fns) => (args: any) => Promise<{
+    railRight: <Fns extends import("./type").Fn[]>(...funcs: Fns) => (args: any) => Promise<{
         failed: Symbol;
         err: any;
-    } | ReturnType<Fns[number]>>;
+    } | ReturnType<Fns[0]>>;
+    rail: <Fns_1 extends import("./type").Fn[]>(...funcs: Fns_1) => (args: any) => Promise<{
+        failed: Symbol;
+        err: any;
+    } | ReturnType<Fns_1[number]>>;
 };
 export default _default;
