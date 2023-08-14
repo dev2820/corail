@@ -111,3 +111,23 @@ const result = await corail.rail(fetchTodo, getTitle)(1);
 corail.isFailed(result); // false;
 result; // "delectus aut autem"
 ```
+
+### railRight
+
+There is another rail named `railRight`. I recommend this to typescript users. Because this function can guess its return value.
+
+```ts
+// typescript example
+const multi2 = (num: number) => num * 2;
+const sumStr3 = (num: number) => String(num + 3);
+
+const result = await corail.railRight(sumStr3, multi2)(1); // the result is assumed to be Failed | string
+
+if (corail.isFailed(result)) {
+  // if result is failed, result is assumed Failed type
+  return;
+}
+result; // to be '5' and it is assumed as a string
+```
+
+`railRight` runs the rail from right to left (like compose)
