@@ -25,7 +25,7 @@
   },
   "scripts": {
     "build": "rm -rf dist/* && node esbuild.js",
-    "patch": "./patch.sh",
+    "patch": "patch.sh",
     "patch:minor": "pnpm run build && pnpm version minor && git push origin --tags",
     "test": "vitest run",
     "test:watch": "vitest"

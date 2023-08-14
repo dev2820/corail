@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 pnpm run build
 git add dist/*
 git commit -m "chore/ build"
