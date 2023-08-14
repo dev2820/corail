@@ -44,3 +44,15 @@ export const rail = <Fns extends Fn[]>(...funcs: Fns) => {
     }
   };
 };
+
+export const railRight = <Fns extends Fn[]>(...funcs: Fns) => {
+  return async (args: any): Promise<Failed | ReturnType<Fns[0]>> => {
+    try {
+      const result = await funcs.reduceRight(execFunc, args);
+
+      return result;
+    } catch (err) {
+      return failed(err);
+    }
+  };
+};
